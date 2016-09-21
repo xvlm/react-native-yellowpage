@@ -38,12 +38,7 @@ import {
 import { AdMobInterstitial, AdMobBanner } from 'react-native-admob';
 import {APPS} from '../constants/Apps';
 import AppContainer from '../containers/AppContainer';
-import * as action from '../actions/IpSearch';
 
-const propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    rIpSearch: PropTypes.object.isRequired
-};
 
 
 let { width, height } = Dimensions.get('window');
@@ -52,32 +47,16 @@ let { width, height } = Dimensions.get('window');
 class Main extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,
-            }),
-            typeIds: []
-        };
 
     } 
-
+   
 
     onPress(app) {
-        const { navigator, dispatch } = this.props;
-        let component = null;
-        switch (app.action) {
-            case 'AppContainer':
-                component = AppContainer; break;
-            case 'idService':
-                component = idService; break;
-            default:
-                component = AppContainer;
-        }
-        navigator.push({
-            component: component,
+        const { navigator } = this.props;
+        navigator.resetTo({
+            component: AppContainer,
             name: 'AppContainer',
             app: app,
-            dispatch: dispatch
         });
     }
 
@@ -98,6 +77,7 @@ class Main extends React.Component {
                                     >
                                     <TouchableOpacity onPress={() => this.onPress(app) }>
                                         <Image
+                                            resizeMode={Image.resizeMode.contain}
                                             style={styles.image}
                                             source={{ uri: app.icon }}
                                             />
@@ -108,13 +88,11 @@ class Main extends React.Component {
                         }) }
                     </View>
                 </ScrollView>
-                <View style={styles.container}>
-                    <AdMobBanner
-                        bannerSize="smartBannerPortrait"
-                        testDeviceID="EMULATOR"
-                        adUnitID="ca-app-pub-1114976574475183/6436382287"
-                        />
-                </View>
+                <AdMobBanner
+                    bannerSize="smartBannerPortrait"
+                    testDeviceID="EMULATOR"
+                    adUnitID="ca-app-pub-1114976574475183/6436382287"
+                    />
             </View>
 
         );
@@ -190,7 +168,5 @@ const styles = StyleSheet.create({
         color: 'black'
     }
 });
-
-Main.propTypes = propTypes;
 
 export default Main;

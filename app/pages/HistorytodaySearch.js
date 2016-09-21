@@ -33,13 +33,24 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 
-class IdSearch extends React.Component {
+
+class HistorytodaySearch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             txtValue: ''
         };
     }
+
+    componentDidMount() {
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let date = myDate.getDate();
+        let year = myDate.getFullYear();
+        console.log(year, month, date);
+        this.setState({ txtValue: year + '-' + month + '-' + date });
+    }
+
 
     onPress() {
         const { navigator } = this.props;
@@ -51,23 +62,26 @@ class IdSearch extends React.Component {
         });
     }
 
+
+
+
     render() {
         return (
             <View style={styles.container}>
                 <View>
                     <Image
-                        resizeMode={Image.resizeMode.contain}
+                        onPress
                         style={styles.image}
-                        source={{ uri: this.props.route.app.icon }}
+                        source={{ uri: this.props.route.app.icon, }}
                         />
                 </View>
                 <View style={styles.txtBorder}>
-                    <Text style={styles.txtName}>{'身份证'}</Text>
+                    <Text style={styles.txtName}>日期</Text>
                     <TextInput
                         underlineColorAndroid = {'transparent'}
                         style={styles.textInput}
                         multiline={false}
-                        placeholder={'请输入身份证号码'}
+                        placeholder={'请输入日期 格式:2016-9-20'}
                         password={false}
                         onChangeText={(text) => {
                             this.setState({
@@ -77,7 +91,7 @@ class IdSearch extends React.Component {
                         value={this.state.txtValue}
                         />
                 </View>
-                <TouchableOpacity onPress={() => this.onPress(this) }>
+                <TouchableOpacity onPress={() => this.onPress() }>
                     <View style={styles.buttonBorder}>
                         <Text
                             style={styles.button}
@@ -85,18 +99,17 @@ class IdSearch extends React.Component {
                     </View>
                 </TouchableOpacity>
             </View>
-
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: height,
         flex: 1,
-        backgroundColor: 'white',
+        height: height,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: 'white'
     },
     txtBorder: {
         height: 50,
@@ -112,9 +125,9 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         borderColor: '#51A7F9',
-        margin: 30,
+        margin: 60,
 
-        width: width - 60,
+        width: width - 100,
         borderRadius: 5,
         flexDirection: 'row'
     },
@@ -162,4 +175,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default IdSearch;
+export default HistorytodaySearch;

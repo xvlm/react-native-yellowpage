@@ -45,11 +45,5 @@ class MainContainer extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { rIpSearch } = state;
-    return {
-        rIpSearch
-    };
-}
 
-export default connect(mapStateToProps)(MainContainer);
+export default MainContainer;

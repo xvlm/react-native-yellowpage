@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  */
-import React , { PropTypes }from 'react';
+import React, { PropTypes }from 'react';
 import {
     Dimensions,
     View,
@@ -24,58 +24,41 @@ import {
     Text,
     StyleSheet,
     PixelRatio,
-    ListView,
     TouchableOpacity,
 } from 'react-native';
 
-import MainContainer from '../containers/MainContainer';
-import * as action from '../actions/IpSearch';
+import ResultContainer from '../containers/ResultContainer';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
-
-
-const propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    rIpSearch: PropTypes.object.isRequired
-};
-
 
 class IpSearch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,
-            }),
             txtValue: ''
         };
     }
 
-    componentDidMount() {
-        // const { dispatch } = this.props;
-        // dispatch(action.IpSearch(false, true, '127.0.0.1'));
-    }
 
-
-    componentWillReceiveProps() {
-        const { main } = this.props;
-        console.log(this.props)
-    }
 
     onPress() {
-        const { dispatch } = this.props.route;
-        dispatch(action.IpSearch(false, true, this.state.txtValue));
+        const { navigator } = this.props;
+        navigator.resetTo({
+            component: ResultContainer,
+            name: 'ResultContainer',
+            txtValue: this.state.txtValue,
+            app: this.props.route.app
+        });
     }
 
-
     render() {
-        console.log(this.props);
         return (
             <View style={styles.container}>
+
                 <View>
                     <Image
-                        onPress
+                        resizeMode={Image.resizeMode.contain}
                         style={styles.image}
                         source={{ uri: this.props.route.app.icon }}
                         />
@@ -103,46 +86,36 @@ class IpSearch extends React.Component {
                             >{'Search'}</Text>
                     </View>
                 </TouchableOpacity>
-                {this.props.rIpSearch.loading!==true?
-                    <View style={styles.resultBorder}>
-                     <Text style={styles.txtName}>{'结果'}</Text>
-                      {this.props.rIpSearch.result.errNum ==0 ?
-                            <Text  style={styles.txt}>{this.props.rIpSearch.result.retData.carrier} {this.props.rIpSearch.result.retData.city} {this.props.rIpSearch.result.retData.district}</Text>
-                            :
-                            <Text  style={styles.txt}>{this.props.rIpSearch.result.retData[0]} </Text>
-                        }
-                  
-                    </View>
-                    :null}
             </View>
-
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        height: height,
         flex: 1,
+        backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     txtBorder: {
         height: 50,
         borderWidth: 1,
         borderColor: '#51A7F9',
         borderRadius: 25,
-        marginLeft: 60,
-        marginRight: 100,
+        marginLeft: 30,
+        marginRight: 30,
         flexDirection: 'row'
     },
     resultBorder: {
-        
+
         height: 50,
         borderWidth: 1,
         borderColor: '#51A7F9',
         margin: 60,
-        
-        width:width-100,
+
+        width: width - 100,
         borderRadius: 5,
         flexDirection: 'row'
     },
@@ -183,13 +156,10 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
         borderRadius: 5
     },
-    txt:{
+    txt: {
         height: 20,
         fontSize: 15,
         marginTop: 15,
     }
 })
-
-IpSearch.propTypes = propTypes;
-
 export default IpSearch;

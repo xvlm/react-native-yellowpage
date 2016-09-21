@@ -24,66 +24,58 @@ import {
     Text,
     StyleSheet,
     PixelRatio,
+    ListView,
     TouchableOpacity,
+    ScrollView
 } from 'react-native';
 
-import ResultContainer from '../containers/ResultContainer';
+import LoadingView from '../components/LoadingView';
+import * as action from '../actions/IpSearch';
+
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 
-class IdSearch extends React.Component {
+const propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    rIdSearch: PropTypes.object.isRequired
+};
+
+
+class IpResult extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            txtValue: ''
-        };
     }
 
-    onPress() {
-        const { navigator } = this.props;
-        navigator.resetTo({
-            component: ResultContainer,
-            name: 'ResultContainer',
-            txtValue: this.state.txtValue,
-            app: this.props.route.app
-        });
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(action.IpSearch(false, true, this.props.route.txtValue));
     }
+
 
     render() {
+       console.log(this.props);
         return (
             <View style={styles.container}>
-                <View>
-                    <Image
-                        resizeMode={Image.resizeMode.contain}
-                        style={styles.image}
-                        source={{ uri: this.props.route.app.icon }}
-                        />
-                </View>
-                <View style={styles.txtBorder}>
-                    <Text style={styles.txtName}>{'身份证'}</Text>
-                    <TextInput
-                        underlineColorAndroid = {'transparent'}
-                        style={styles.textInput}
-                        multiline={false}
-                        placeholder={'请输入身份证号码'}
-                        password={false}
-                        onChangeText={(text) => {
-                            this.setState({
-                                txtValue: text
-                            })
-                        } }
-                        value={this.state.txtValue}
-                        />
-                </View>
-                <TouchableOpacity onPress={() => this.onPress(this) }>
-                    <View style={styles.buttonBorder}>
-                        <Text
-                            style={styles.button}
-                            >{'Search'}</Text>
+                {this.props.rIpSearch.loading !== true ?
+                    <View>
+                        {this.props.rIpSearch.result.errNum == 0 ?
+                            <View>
+                                <View style={styles.resultBorder}>
+                                    <Text style={styles.txtName}>{'IP：'}</Text>
+                                    <Text  style={styles.txt}>{this.props.route.txtValue}</Text>
+                                </View>
+                                <View style={styles.resultBorder}>
+                                    <Text style={styles.txtName}>{'地区：'}</Text>
+                                    <Text  style={styles.txt}>{this.props.rIpSearch.result.retData.carrier} {this.props.rIpSearch.result.retData.city} {this.props.rIpSearch.result.retData.district}</Text>
+                                </View>
+                            </View>
+                            :
+                            <Text style={styles.txt}>{this.props.rIpSearch.result.errMsg==='success'?this.props.rIpSearch.result.retData[0]:this.props.rIpSearch.result.errMsg}</Text>}
                     </View>
-                </TouchableOpacity>
+                    : <LoadingView style={styles.container}/>}
+
             </View>
 
         );
@@ -94,9 +86,9 @@ const styles = StyleSheet.create({
     container: {
         height: height,
         flex: 1,
-        backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor:'white'
     },
     txtBorder: {
         height: 50,
@@ -162,4 +154,6 @@ const styles = StyleSheet.create({
     }
 })
 
-export default IdSearch;
+IpResult.propTypes = propTypes;
+
+export default IpResult;

@@ -7,16 +7,16 @@ const initialState = {
     result: []
 }
 
-export default function rIdSearch(state = initialState, action) {
+export default function rHistorytodaySearch(state = initialState, action) {
     console.log(action);
     switch (action.type) {
-        case types.ID_SEARCH_SERVICE:
-            console.log('reducer types.ID_SEARCH_SERVICE', state);
+        case types.HISTORYTODAY_SEARCH_SERVICE:
+            console.log('reducer types.HISTORYTODAY_SEARCH_SERVICE', state);
             return Object.assign({}, state, {
                 loading: true
             });
-        case types.RECEIVE_ID_SEARCH:
-            console.log('reducer types.RECEIVE_ID_SEARCH', state);
+        case types.RECEIVE_HISTORYTODAY_SEARCH:
+            console.log('reducer types.RECEIVE_HISTORYTODAY_SEARCH', state);
             return Object.assign({}, state, {
                 loading: false,
                 result: action.result

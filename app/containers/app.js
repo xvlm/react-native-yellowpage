@@ -37,15 +37,20 @@ class App extends React.Component {
     // this.goBack = this.goBack.bind(this);
   }
 
-  configureScene() {
-    return Navigator.SceneConfigs.PushFromRight;
-  }
+  // configureScene() {
+  //   return Navigator.SceneConfigs.PushFromRight;
+  // }
+
+ configureScene(route){
+      return Navigator.SceneConfigs.FadeAndroid;
+    }
 
   goBack() {
     return naviGoBack(tempNavigator);
   }
 
   renderScene(route, navigator) {
+    console.log(route);
     let Component = route.component;
     tempNavigator = navigator;
     if (route.name === 'AppContainer') {

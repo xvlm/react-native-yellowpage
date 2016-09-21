@@ -2,14 +2,16 @@
 
 import {combineReducers} from 'redux';
 // import notice from './notice';
-// import main from './main';
+import main from './main';
 import rIpSearch from './rIpSearch';
 import rIdSearch from './rIdSearch';
+import rHistorytodaySearch from './rHistorytodaySearch';
 
 const rootReducer = combineReducers({
-  // main,
+  main,
   rIpSearch,
-  rIdSearch
+  rIdSearch,
+  rHistorytodaySearch
 })
 
 export default rootReducer;

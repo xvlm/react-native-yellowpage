@@ -23,26 +23,28 @@ import {
 
 import { connect } from 'react-redux';
 // import AV from 'leancloud-storage';
-import IpSearch from '../pages/IpSearch';
-import IdSearch from '../pages/IdSearch';
-import HistorytodaySearch from '../pages/HistorytodaySearch';
+import IpResult from '../pages/IpResult';
+import IdResult from '../pages/IdResult';
+import AppContainer from './AppContainer';
+import HistorytodayResult from '../pages/HistorytodayResult';
 // import Storage from '../utils/Storage';
 import NavigationBar from 'react-native-navbar';
-import MainContainer from './MainContainer';
 
-class AppContainer extends React.Component {
+class ResultContainer extends React.Component {
 
 
     render() {
         console.log(this.props);
         let view = null;
-        let navigator=this.props.navigator;
+        let navigator = this.props.navigator;
+        let app = this.props.route.app;
         let leftButtonConfig = {
             title: '返回',
             handler: function onGoBack() {
                 navigator.resetTo({
-                    component: MainContainer,
-                    name: 'MainContainer',
+                    component: AppContainer,
+                    name: 'AppContainer',
+                    app: app,
                 });
             }
         };
@@ -52,13 +54,13 @@ class AppContainer extends React.Component {
         };
         switch (this.props.route.app.action) {
             case "IpSearch":
-                view = <IpSearch {...this.props} />;
+                view = <IpResult {...this.props} />;
                 break;
             case "IdSearch":
-                view = <IdSearch {...this.props} />;
+                view = <IdResult {...this.props} />;
                 break;
             case "HistorytodaySearch":
-                view = <HistorytodaySearch {...this.props} />;
+                view = <HistorytodayResult {...this.props} />;
                 break;
         }
         return (
@@ -75,4 +77,14 @@ class AppContainer extends React.Component {
     }
 }
 
-export default AppContainer;
+function mapStateToProps(state) {
+    console.log(state);
+    const { rIpSearch, rIdSearch, rHistorytodaySearch } = state;
+    return {
+        rIpSearch,
+        rIdSearch,
+        rHistorytodaySearch
+    };
+}
+
+export default connect(mapStateToProps)(ResultContainer);
